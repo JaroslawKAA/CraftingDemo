@@ -1,6 +1,6 @@
 using System;
 
-namespace Core.GameEvents
+namespace Systems.Core.GameEvents
 {
     public class EventListener
     {

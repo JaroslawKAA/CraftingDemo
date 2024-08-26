@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Core.GameEvents
+namespace Systems.Core.GameEvents
 {
     public static class EventManager
     {

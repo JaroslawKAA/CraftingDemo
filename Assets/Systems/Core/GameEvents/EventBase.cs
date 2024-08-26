@@ -1,4 +1,4 @@
-﻿namespace Core.GameEvents
+﻿namespace Systems.Core.GameEvents
 {
     public abstract class EventBase
     {
