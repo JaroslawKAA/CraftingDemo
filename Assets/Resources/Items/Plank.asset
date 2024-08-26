@@ -15,4 +15,4 @@ MonoBehaviour:
   guid: 2f904512-c024-47d6-8911-bdf5f9e62548
   itemName: Plank
   icon: {fileID: 0}
-  prefab: {fileID: 0}
+  prefab: {fileID: 7708940075129868811, guid: ef5bbe7939566394eb4b1b2942b9bc19, type: 3}

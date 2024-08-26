@@ -15,4 +15,4 @@ MonoBehaviour:
   guid: 25c90ec7-bb8a-40f4-9129-9f53eff684d4
   itemName: Nail
   icon: {fileID: 0}
-  prefab: {fileID: 0}
+  prefab: {fileID: 8515946490702890607, guid: ca8010e81478f024e95284d11bda1034, type: 3}

@@ -15,4 +15,4 @@ MonoBehaviour:
   guid: 8590ac50-f9ec-42ec-98b8-a175ade5a847
   itemName: Stone axe
   icon: {fileID: 0}
-  prefab: {fileID: 0}
+  prefab: {fileID: 1833248637292010615, guid: fe5e577fbf639a54482c894314510401, type: 3}

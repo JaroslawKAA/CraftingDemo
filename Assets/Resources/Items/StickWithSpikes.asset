@@ -15,4 +15,4 @@ MonoBehaviour:
   guid: ee47fdaa-f724-468a-b2d9-4a148c570e02
   itemName: Stick with spikes
   icon: {fileID: 0}
-  prefab: {fileID: 0}
+  prefab: {fileID: 2458577767893551285, guid: 68431737139fbb94087e3d67a765b2a4, type: 3}

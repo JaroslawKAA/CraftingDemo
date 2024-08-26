@@ -15,4 +15,4 @@ MonoBehaviour:
   guid: a4c27996-6993-421d-aa76-1b107df2e104
   itemName: Rock
   icon: {fileID: 0}
-  prefab: {fileID: 0}
+  prefab: {fileID: 8713779301845526704, guid: 3e72a1f9fa38a3a4ba298c857312740e, type: 3}

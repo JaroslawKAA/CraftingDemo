@@ -15,4 +15,4 @@ MonoBehaviour:
   guid: 7ab09ddb-dc32-4e90-bf64-6ade2a02dfc9
   itemName: Iron
   icon: {fileID: 0}
-  prefab: {fileID: 0}
+  prefab: {fileID: 6968243520345813940, guid: 93ccc27899f57e04583653bbead7f277, type: 3}
