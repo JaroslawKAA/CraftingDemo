@@ -168,3 +168,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: d066a1f3d2763fa4999bb8f227970bc0, type: 2}
+  meshRenderer: {fileID: 8913979359531799137}
+  instanceGuid: 
+--- !u!23 &8913979359531799137 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: c2224537ec0234b448a6fc424681f4b4,
+    type: 3}
+  m_PrefabInstance: {fileID: 7815228998915198693}
+  m_PrefabAsset: {fileID: 0}

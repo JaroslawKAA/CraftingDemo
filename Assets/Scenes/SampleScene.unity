@@ -1519,6 +1519,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: ItemDetectionCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 3560803293743150595, guid: 0a939994980b84740a6429fb638772f0,
+        type: 3}
+      propertyPath: m_Pivot.y
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3560803293743150595, guid: 0a939994980b84740a6429fb638772f0,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3560803293743150595, guid: 0a939994980b84740a6429fb638772f0,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3560803293743150595, guid: 0a939994980b84740a6429fb638772f0,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 559.78
+      objectReference: {fileID: 0}
     - target: {fileID: 5216489732692169764, guid: 0a939994980b84740a6429fb638772f0,
         type: 3}
       propertyPath: m_Pivot.x

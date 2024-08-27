@@ -116,6 +116,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemNameText: {fileID: 470476868125966085}
+  itemNameRectTransform: {fileID: 3560803293743150595}
+  canvasRectTransform: {fileID: 5216489732692169764}
 --- !u!1 &2958941022218307566
 GameObject:
   m_ObjectHideFlags: 0
@@ -127,6 +129,7 @@ GameObject:
   - component: {fileID: 3560803293743150595}
   - component: {fileID: 7317192482282098851}
   - component: {fileID: 470476868125966085}
+  - component: {fileID: 4431702014226456283}
   m_Layer: 5
   m_Name: ItemNameText
   m_TagString: Untagged
@@ -250,3 +253,17 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &4431702014226456283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2958941022218307566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 2
+  m_VerticalFit: 2

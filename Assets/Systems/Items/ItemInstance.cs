@@ -13,14 +13,23 @@ namespace Systems.Items
         // SERIALIZED
         [Title("Depend")]
         [SerializeField] [Required] [InlineEditor] Item item;
+        [SerializeField] [Required] MeshRenderer meshRenderer;
 
         [Title("Debug")]
         [SerializeField] [ReadOnly] string instanceGuid;
-        
+
+        // PROPERTIES
+        public string InstanceGuid => instanceGuid;
+        public Item Item => item;
+        public MeshRenderer MeshRenderer => meshRenderer;
+        public Transform CachedTransform { get; private set; }
+
         // UNITY EVENTS
         void Awake()
         {
             instanceGuid = Guid.NewGuid().ToString();
+
+            CachedTransform = transform;
         }
 
         // METHODS
@@ -44,7 +53,9 @@ namespace Systems.Items
             }
 
             gameObject.layer = Layers.Item;
-            
+
+            meshRenderer = GetComponent<MeshRenderer>();
+
             EditorUtility.SetDirty(gameObject);
         }
 #endif

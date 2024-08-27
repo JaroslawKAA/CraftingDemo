@@ -119,6 +119,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: c34824bd248a2554f912060ff19b210a, type: 2}
+  meshRenderer: {fileID: 4115835978786564448}
+  instanceGuid: 
 --- !u!65 &678957502495588952
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -167,3 +169,9 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 122
   m_CollisionDetection: 0
+--- !u!23 &4115835978786564448 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: c9780865fe7bcff43902a234cc1950b0,
+    type: 3}
+  m_PrefabInstance: {fileID: 3377689437570528740}
+  m_PrefabAsset: {fileID: 0}

@@ -12,13 +12,17 @@ namespace Systems.UI
         // SERIALIZED
         [Title("Depend")]
         [SerializeField] [Required] TMP_Text itemNameText;
+        [SerializeField] [Required] RectTransform itemNameRectTransform;
+        [SerializeField] [Required] RectTransform canvasRectTransform;
 
         // PRIVATE
         EventListener onItemDetectedListener;
         EventListener onItemReleasedListener;
 
+        Camera mainCamera;
+
+        MeshRenderer selectedItemMeshRenderer;
         Transform selectedItemTransform;
-        string selectedItemGuid;
 
         // UNITY EVENTS
         void Awake()
@@ -29,19 +33,30 @@ namespace Systems.UI
             onItemReleasedListener = new EventListener(OnItemReleased);
             EventManager.RegisterListener<ItemReleasedEvent>(onItemReleasedListener);
 
+            mainCamera = Camera.main;
+
             itemNameText.enabled = false;
         }
 
         void Update()
         {
-            if (!selectedItemTransform) return;
+            if (!selectedItemMeshRenderer) return;
 
             SetItemNameTextAboveItem();
         }
 
         void SetItemNameTextAboveItem()
         {
-            throw new NotImplementedException();
+            Bounds selectedItemBounds = selectedItemMeshRenderer.bounds;
+            Vector3 textTargetPosition = selectedItemBounds.center + new Vector3(0, selectedItemBounds.extents.y);
+            Vector2 screenPosition = mainCamera.WorldToScreenPoint(textTargetPosition);
+            
+            Vector2 screenPositionRation = new Vector2(screenPosition.x / Screen.width,
+                screenPosition.y / Screen.height);
+            Vector2 itemNameTextCanvasPosition = new Vector2(screenPositionRation.x * canvasRectTransform.sizeDelta.x,
+                screenPositionRation.y * canvasRectTransform.sizeDelta.y);
+            
+            itemNameRectTransform.anchoredPosition = itemNameTextCanvasPosition;
         }
 
         void OnDestroy()
@@ -55,8 +70,8 @@ namespace Systems.UI
         {
             ItemDetectedEvent itemDetectedEvent = eventBase as ItemDetectedEvent;
 
+            selectedItemMeshRenderer = itemDetectedEvent.ItemMeshRenderer;
             selectedItemTransform = itemDetectedEvent.ItemTransform;
-            selectedItemGuid = itemDetectedEvent.ItemGuid;
 
             itemNameText.text = itemDetectedEvent.ItemName;
             itemNameText.enabled = true;
@@ -67,8 +82,7 @@ namespace Systems.UI
             itemNameText.enabled = false;
             itemNameText.text = String.Empty;
 
-            selectedItemTransform = null;
-            selectedItemGuid = null;
+            selectedItemMeshRenderer = null;
         }
     }
 }
