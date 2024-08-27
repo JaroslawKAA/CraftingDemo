@@ -1,10 +1,10 @@
 namespace Systems.Core.GameEvents.Events
 {
-    public class OnItemReleased : EventBase
+    public class ItemReleasedEvent : EventBase
     {
         public string Guid { get; private set; }
 
-        public OnItemReleased(string guid)
+        public ItemReleasedEvent(string guid)
         {
             Guid = guid;
         }

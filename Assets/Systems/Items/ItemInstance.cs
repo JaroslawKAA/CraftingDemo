@@ -1,3 +1,4 @@
+using System;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -9,8 +10,20 @@ namespace Systems.Items
 {
     public class ItemInstance : MonoBehaviour
     {
+        // SERIALIZED
+        [Title("Depend")]
         [SerializeField] [Required] [InlineEditor] Item item;
 
+        [Title("Debug")]
+        [SerializeField] [ReadOnly] string instanceGuid;
+        
+        // UNITY EVENTS
+        void Awake()
+        {
+            instanceGuid = Guid.NewGuid().ToString();
+        }
+
+        // METHODS
 #if UNITY_EDITOR
         [Button]
         void ConfigureItem()
