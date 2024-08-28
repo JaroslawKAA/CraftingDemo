@@ -36,7 +36,7 @@ namespace Systems.InteractionSystem
 
         void OnEnable()
         {
-            Input.Inputs.Player.Interact.performed += OnInteract;
+            Input.Inputs.ThirdPersonPlayer.Interact.performed += OnInteract;
         }
 
         void Update()
@@ -48,7 +48,7 @@ namespace Systems.InteractionSystem
 
         void OnDisable()
         {
-            Input.Inputs.Player.Interact.performed -= OnInteract;
+            Input.Inputs.ThirdPersonPlayer.Interact.performed -= OnInteract;
         }
 
         void OnInteract(InputAction.CallbackContext context)

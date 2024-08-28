@@ -73,6 +73,15 @@ namespace Systems.Core
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Inventory"",
+                    ""type"": ""Button"",
+                    ""id"": ""f86e6b48-da87-4640-9768-956082658a52"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -273,6 +282,17 @@ namespace Systems.Core
                     ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e95e0b4a-8319-4d83-a2bd-3d2fc00dabe0"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""Inventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -334,6 +354,7 @@ namespace Systems.Core
             m_ThirdPersonPlayer_Jump = m_ThirdPersonPlayer.FindAction("Jump", throwIfNotFound: true);
             m_ThirdPersonPlayer_Sprint = m_ThirdPersonPlayer.FindAction("Sprint", throwIfNotFound: true);
             m_ThirdPersonPlayer_Interact = m_ThirdPersonPlayer.FindAction("Interact", throwIfNotFound: true);
+            m_ThirdPersonPlayer_Inventory = m_ThirdPersonPlayer.FindAction("Inventory", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -400,6 +421,7 @@ namespace Systems.Core
         private readonly InputAction m_ThirdPersonPlayer_Jump;
         private readonly InputAction m_ThirdPersonPlayer_Sprint;
         private readonly InputAction m_ThirdPersonPlayer_Interact;
+        private readonly InputAction m_ThirdPersonPlayer_Inventory;
         public struct ThirdPersonPlayerActions
         {
             private @Inputs m_Wrapper;
@@ -409,6 +431,7 @@ namespace Systems.Core
             public InputAction @Jump => m_Wrapper.m_ThirdPersonPlayer_Jump;
             public InputAction @Sprint => m_Wrapper.m_ThirdPersonPlayer_Sprint;
             public InputAction @Interact => m_Wrapper.m_ThirdPersonPlayer_Interact;
+            public InputAction @Inventory => m_Wrapper.m_ThirdPersonPlayer_Inventory;
             public InputActionMap Get() { return m_Wrapper.m_ThirdPersonPlayer; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -433,6 +456,9 @@ namespace Systems.Core
                 @Interact.started += instance.OnInteract;
                 @Interact.performed += instance.OnInteract;
                 @Interact.canceled += instance.OnInteract;
+                @Inventory.started += instance.OnInventory;
+                @Inventory.performed += instance.OnInventory;
+                @Inventory.canceled += instance.OnInventory;
             }
 
             private void UnregisterCallbacks(IThirdPersonPlayerActions instance)
@@ -452,6 +478,9 @@ namespace Systems.Core
                 @Interact.started -= instance.OnInteract;
                 @Interact.performed -= instance.OnInteract;
                 @Interact.canceled -= instance.OnInteract;
+                @Inventory.started -= instance.OnInventory;
+                @Inventory.performed -= instance.OnInventory;
+                @Inventory.canceled -= instance.OnInventory;
             }
 
             public void RemoveCallbacks(IThirdPersonPlayerActions instance)
@@ -512,6 +541,7 @@ namespace Systems.Core
             void OnJump(InputAction.CallbackContext context);
             void OnSprint(InputAction.CallbackContext context);
             void OnInteract(InputAction.CallbackContext context);
+            void OnInventory(InputAction.CallbackContext context);
         }
     }
 }

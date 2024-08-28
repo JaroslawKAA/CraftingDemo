@@ -105,7 +105,7 @@ namespace InputSystem
         private bool _hasAnimator;
         
         // input
-        Inputs.ThirdPersonPlayerActions ThirdPersonPlayerActions = Input.Inputs.ThirdPersonPlayer;
+        Inputs.ThirdPersonPlayerActions ThirdPersonPlayerActions;
 
 
         private void Awake()
@@ -115,6 +115,8 @@ namespace InputSystem
             {
                 _mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
             }
+            
+            ThirdPersonPlayerActions = Input.Inputs.ThirdPersonPlayer;
         }
 
         private void Start()
