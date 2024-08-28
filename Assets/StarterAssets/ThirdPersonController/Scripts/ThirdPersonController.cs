@@ -1,4 +1,5 @@
-﻿ using UnityEngine;
+﻿ using Systems.Core;
+ using UnityEngine;
  using Input = Systems.Core.InputSystem.InputsManager;
 
 /* Note: animations are called via the controller for both the character and capsule using animator null checks
@@ -102,8 +103,9 @@ namespace InputSystem
         private const float _threshold = 0.01f;
 
         private bool _hasAnimator;
-
-        private bool IsCurrentDeviceMouse => true;
+        
+        // input
+        Inputs.ThirdPersonPlayerActions ThirdPersonPlayerActions = Input.Inputs.ThirdPersonPlayer;
 
 
         private void Awake()
@@ -170,7 +172,7 @@ namespace InputSystem
         private void CameraRotation()
         {
             // if there is an input and camera position is not fixed
-            Vector2 look = Input.Inputs.Player.Look.ReadValue<Vector2>();
+            Vector2 look = ThirdPersonPlayerActions.Look.ReadValue<Vector2>();
             if (look.sqrMagnitude >= _threshold && !LockCameraPosition)
             {
                 //Don't multiply mouse input by Time.deltaTime;
@@ -192,13 +194,13 @@ namespace InputSystem
         private void Move()
         {
             // set target speed based on move speed, sprint speed and if sprint is pressed
-            float targetSpeed = Input.Inputs.Player.Sprint.IsPressed() ? SprintSpeed : MoveSpeed;
+            float targetSpeed = ThirdPersonPlayerActions.Sprint.IsPressed() ? SprintSpeed : MoveSpeed;
 
             // a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
 
             // note: Vector2's == operator uses approximation so is not floating point error prone, and is cheaper than magnitude
             // if there is no input, set the target speed to 0
-            Vector2 move = Input.Inputs.Player.Move.ReadValue<Vector2>();
+            Vector2 move = ThirdPersonPlayerActions.Move.ReadValue<Vector2>();
             if (move == Vector2.zero) targetSpeed = 0.0f;
 
             // a reference to the players current horizontal velocity
@@ -279,7 +281,7 @@ namespace InputSystem
                 }
 
                 // Jump
-                bool jump = Input.Inputs.Player.Jump.WasPerformedThisFrame();
+                bool jump = ThirdPersonPlayerActions.Jump.WasPerformedThisFrame();
                 if (jump && _jumpTimeoutDelta <= 0.0f)
                 {
                     // the square root of H * -2 * G = how much velocity needed to reach desired height

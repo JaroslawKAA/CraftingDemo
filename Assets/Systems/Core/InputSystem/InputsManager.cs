@@ -9,7 +9,6 @@ namespace Systems.Core.InputSystem
         static InputsManager()
         {
             inputs = new Inputs();
-            inputs.Player.Enable();
         }
     }
 }
