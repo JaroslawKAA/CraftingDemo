@@ -1,5 +1,5 @@
 ﻿ using UnityEngine;
- using Input = Systems.Core.InputsManager;
+ using Input = Systems.Core.InputSystem.InputsManager;
 
 /* Note: animations are called via the controller for both the character and capsule using animator null checks
  */
