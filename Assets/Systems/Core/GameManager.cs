@@ -1,7 +1,8 @@
+using System;
 using Systems.Core.GameEvents;
 using UnityEngine.Assertions;
 using Sirenix.OdinInspector;
-using Systems.Core.Services;
+using Systems.Core.GameState;
 using UnityEngine;
 
 namespace Systems.Core
@@ -12,13 +13,13 @@ namespace Systems.Core
         [SerializeField] [Required] GameObject playerPrefab;
         [SerializeField] [Required] Transform playerSpawnPoint;
         
-        IItemDetectionService itemDetectionService;
-
         GameObject player;
+
+        GameStateMachine gameStateMachine;
 
         void Awake()
         {
-            itemDetectionService = new ItemDetectionService();
+            gameStateMachine = new GameStateMachine(context: this);
         }
 
         void Start()
@@ -26,6 +27,13 @@ namespace Systems.Core
             SpawnPlayer();
 
             Cursor.visible = false;
+            
+            gameStateMachine.TransitionTo(GameStateMachine.State.ThirdPersonPlayer);
+        }
+
+        void Update()
+        {
+            gameStateMachine.Update();
         }
 
         void SpawnPlayer()

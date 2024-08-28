@@ -1,4 +1,4 @@
-using Input = Systems.Core.InputsManager;
+using Input = Systems.Core.InputSystem.InputsManager;
 
 using Sirenix.OdinInspector;
 using Systems.Core.GameEvents;

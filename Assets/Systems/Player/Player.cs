@@ -26,5 +26,6 @@ public class Player : MonoBehaviour
         PickUpItemEvent pickUpItemEvent = eventBase as PickUpItemEvent;
 
         inventory.AddItem(pickUpItemEvent.ItemGuid, 1);
+        Debug.Log($"The player picked up an item |{pickUpItemEvent.ItemGuid}|");
     }
 }
