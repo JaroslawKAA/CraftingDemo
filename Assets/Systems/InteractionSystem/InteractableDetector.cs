@@ -1,11 +1,14 @@
+using Input = Systems.Core.InputsManager;
+
 using Sirenix.OdinInspector;
 using Systems.Core.GameEvents;
 using Systems.Core.GameEvents.Events;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-namespace Systems.Items.ItemDetector
+namespace Systems.InteractionSystem
 {
-    public class ItemDetector : MonoBehaviour
+    public class InteractableDetector : MonoBehaviour
     {
         // SERIALIZED
         [Title("Config")]
@@ -18,8 +21,11 @@ namespace Systems.Items.ItemDetector
 
         Collider[] itemDetectionResult = new Collider[20];
 
+        InputAction onInteract;
+
         // PROPERTIES
-        ItemInstance PreviouslyDetectedItem { get; set; }
+        IIteractable DetectedItem { get; set; }
+        IIteractable PreviouslyDetectedItem { get; set; }
 
         // UNITY EVENTS
         void Awake()
@@ -28,11 +34,29 @@ namespace Systems.Items.ItemDetector
             EventManager.RegisterListener<PlayerSpawnedEvent>(onPlayerSpawnedListener);
         }
 
+        void OnEnable()
+        {
+            Input.Inputs.Player.Interact.performed += OnInteract;
+        }
+
         void Update()
         {
             if (!detectionPoint) return;
 
             TryDetectItem();
+        }
+
+        void OnDisable()
+        {
+            Input.Inputs.Player.Interact.performed -= OnInteract;
+        }
+
+        void OnInteract(InputAction.CallbackContext context)
+        {
+            if (DetectedItem != null)
+            {
+                DetectedItem.Interact();
+            }
         }
 
         void OnDestroy()
@@ -64,9 +88,9 @@ namespace Systems.Items.ItemDetector
                 results: itemDetectionResult,
                 layerMask: ~Layers.Item);
 
-            ItemInstance detectedItem = GetClosestItem(detectedItemsCount);
+            DetectedItem = GetClosestItem(detectedItemsCount);
 
-            if (detectedItem == null)
+            if (DetectedItem == null)
             {
                 if (PreviouslyDetectedItem != null)
                 {
@@ -75,28 +99,28 @@ namespace Systems.Items.ItemDetector
             }
             else
             {
-                if (PreviouslyDetectedItem != detectedItem)
+                if (PreviouslyDetectedItem != DetectedItem)
                 {
                     EventManager.TriggerEvent(
                         new ItemDetectedEvent(
-                            detectedItem.InstanceGuid,
-                            detectedItem.Item.ItemName,
-                            detectedItem.MeshRenderer,
-                            detectedItem.CachedTransform));
+                            DetectedItem.InstanceGuid,
+                            DetectedItem.ItemName,
+                            DetectedItem.MeshRenderer,
+                            DetectedItem.CachedTransform));
                     
-                    PreviouslyDetectedItem = detectedItem;
+                    PreviouslyDetectedItem = DetectedItem;
                 }
             }
         }
 
-        ItemInstance GetClosestItem(int detectedItemsCount)
+        IIteractable GetClosestItem(int detectedItemsCount)
         {
-            ItemInstance detectedItem = null;
+            IIteractable detectedItem = null;
             float closestItemDistance = 10f;
 
             for (int i = 0; i < detectedItemsCount; i++)
             {
-                if (itemDetectionResult[i].TryGetComponent(out ItemInstance itemInstance))
+                if (itemDetectionResult[i].TryGetComponent(out IIteractable itemInstance))
                 {
                     float distanceToItem = GetDistanceToItem(itemInstance);
                     if (IsItemInFront(itemInstance) && distanceToItem < closestItemDistance)
@@ -110,7 +134,7 @@ namespace Systems.Items.ItemDetector
             return detectedItem;
         }
 
-        bool IsItemInFront(ItemInstance itemInstance)
+        bool IsItemInFront(IIteractable itemInstance)
         {
             Vector3 toItemVector = itemInstance.CachedTransform.position - detectionPoint.position;
             float dot = Vector3.Dot(detectionPoint.forward, toItemVector);
@@ -118,7 +142,7 @@ namespace Systems.Items.ItemDetector
             return dot > 0;
         }
 
-        float GetDistanceToItem(ItemInstance itemInstance)
+        float GetDistanceToItem(IIteractable itemInstance)
         {
             return Vector3.Distance(detectionPoint.position, itemInstance.CachedTransform.position);
         }

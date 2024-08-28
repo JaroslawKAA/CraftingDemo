@@ -24,6 +24,8 @@ namespace Systems.Core
         void Start()
         {
             SpawnPlayer();
+
+            Cursor.visible = false;
         }
 
         void SpawnPlayer()
