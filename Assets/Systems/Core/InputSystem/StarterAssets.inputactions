@@ -49,15 +49,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
-                },
-                {
-                    "name": "Inventory",
-                    "type": "Button",
-                    "id": "f86e6b48-da87-4640-9768-956082658a52",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -258,28 +249,41 @@
                     "action": "Look",
                     "isComposite": false,
                     "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "e95e0b4a-8319-4d83-a2bd-3d2fc00dabe0",
-                    "path": "<Keyboard>/i",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KeyboardMouse",
-                    "action": "Inventory",
-                    "isComposite": false,
-                    "isPartOfComposite": false
                 }
             ]
         },
         {
             "name": "Inventory",
             "id": "b3e3dcf2-b6d7-4cfc-b094-65b5140dc2ac",
+            "actions": [],
+            "bindings": []
+        },
+        {
+            "name": "UiShortcuts",
+            "id": "8a871245-989c-42a2-9cda-64be07d9b254",
             "actions": [
                 {
-                    "name": "CloseInventory",
+                    "name": "Back",
                     "type": "Button",
-                    "id": "5410d3b1-3d0a-4080-8be8-0635ff10bc55",
+                    "id": "a09eba7f-38cf-4e77-bd10-7b1de8683a77",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Inventory",
+                    "type": "Button",
+                    "id": "c4076fe1-bc7a-4d73-8b85-7b41e0d076b8",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Crafting",
+                    "type": "Button",
+                    "id": "d39df470-53fd-4e1c-9627-ef2de45eda93",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -289,23 +293,34 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "f4b8cb4e-59ca-4f6a-883d-eac34418be7c",
-                    "path": "<Keyboard>/i",
+                    "id": "1303ffea-889c-40d3-9762-6b3d70c78ee4",
+                    "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",
                     "groups": "KeyboardMouse",
-                    "action": "CloseInventory",
+                    "action": "Back",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "89fdc884-125c-4a6e-b376-b6c2abc23ec7",
-                    "path": "<Keyboard>/escape",
+                    "id": "856ef669-e439-4c10-bd2d-411229858f20",
+                    "path": "<Keyboard>/i",
                     "interactions": "",
                     "processors": "",
                     "groups": "KeyboardMouse",
-                    "action": "CloseInventory",
+                    "action": "Inventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1e50af93-a816-455d-b194-9be9fcaad51d",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "Crafting",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

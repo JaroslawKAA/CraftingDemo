@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
-using Systems.Core;
 using Systems.Core.GameState;
 using Systems.Core.Services;
 using UnityEngine;
@@ -19,12 +18,6 @@ namespace Systems.UI
         readonly Dictionary<string, InventoryPanelRecord> itemRecords = new();
 
         // UNITY EVENTS
-        protected override void Start()
-        {
-            base.Start();
-            GameManager.Instance.onGameStateChanged += TryShowInventory;
-        }
-
         void OnEnable()
         {
             InstantiateRecords();
@@ -34,14 +27,10 @@ namespace Systems.UI
         {
             DestroyRecords();
         }
-
-        void OnDestroy()
-        {
-            GameManager.Instance.onGameStateChanged -= TryShowInventory;
-        }
+        
 
         // METHODS
-        void TryShowInventory(Type state)
+        protected override void TryShowPanel(Type state)
         {
             CachedGameObject.SetActive(state == typeof(InventoryGameState)
                                        || state == typeof(CraftingGameState));

@@ -1,13 +1,13 @@
 using Systems.Core.InputSystem;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace Systems.Core.GameState
 {
     public class InventoryGameState : GameStateBase
     {
         Inputs.InventoryActions inventoryActions = InputsManager.Inputs.Inventory;
-        
+        Inputs.UiShortcutsActions uiShortcutsActions = InputsManager.Inputs.UiShortcuts;
+
         public InventoryGameState(StateMachineBase stateMachineBase, MonoBehaviour context) 
             : base(stateMachineBase, context)
         {
@@ -16,20 +16,25 @@ namespace Systems.Core.GameState
         public override void OnEnter()
         {
             base.OnEnter();
+            
             inventoryActions.Enable();
-            inventoryActions.CloseInventory.performed += ToThirdPersonPlayerState;
+            uiShortcutsActions.Enable();
+
+            uiShortcutsActions.Inventory.performed += ToThirdPersonPlayerState;
+            uiShortcutsActions.Back.performed += ToThirdPersonPlayerState;
+            uiShortcutsActions.Crafting.performed += ToCraftingState;
         }
 
         public override void OnExit()
         {
             base.OnExit();
+            
             inventoryActions.Disable();
-            inventoryActions.CloseInventory.performed -= ToThirdPersonPlayerState;
-        }
-
-        void ToThirdPersonPlayerState(InputAction.CallbackContext _)
-        {
-            gameStateMachine.TransitionTo(GameStateMachine.State.ThirdPersonPlayer);
+            uiShortcutsActions.Disable();
+            
+            uiShortcutsActions.Inventory.performed -= ToThirdPersonPlayerState;
+            uiShortcutsActions.Back.performed -= ToThirdPersonPlayerState;
+            uiShortcutsActions.Crafting.performed -= ToCraftingState;
         }
     }
 }

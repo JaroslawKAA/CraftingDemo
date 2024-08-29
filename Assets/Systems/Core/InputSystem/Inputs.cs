@@ -73,15 +73,6 @@ namespace Systems.Core
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Inventory"",
-                    ""type"": ""Button"",
-                    ""id"": ""f86e6b48-da87-4640-9768-956082658a52"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -282,28 +273,41 @@ namespace Systems.Core
                     ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""e95e0b4a-8319-4d83-a2bd-3d2fc00dabe0"",
-                    ""path"": ""<Keyboard>/i"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardMouse"",
-                    ""action"": ""Inventory"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 }
             ]
         },
         {
             ""name"": ""Inventory"",
             ""id"": ""b3e3dcf2-b6d7-4cfc-b094-65b5140dc2ac"",
+            ""actions"": [],
+            ""bindings"": []
+        },
+        {
+            ""name"": ""UiShortcuts"",
+            ""id"": ""8a871245-989c-42a2-9cda-64be07d9b254"",
             ""actions"": [
                 {
-                    ""name"": ""CloseInventory"",
+                    ""name"": ""Back"",
                     ""type"": ""Button"",
-                    ""id"": ""5410d3b1-3d0a-4080-8be8-0635ff10bc55"",
+                    ""id"": ""a09eba7f-38cf-4e77-bd10-7b1de8683a77"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Inventory"",
+                    ""type"": ""Button"",
+                    ""id"": ""c4076fe1-bc7a-4d73-8b85-7b41e0d076b8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Crafting"",
+                    ""type"": ""Button"",
+                    ""id"": ""d39df470-53fd-4e1c-9627-ef2de45eda93"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -313,23 +317,34 @@ namespace Systems.Core
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""f4b8cb4e-59ca-4f6a-883d-eac34418be7c"",
-                    ""path"": ""<Keyboard>/i"",
+                    ""id"": ""1303ffea-889c-40d3-9762-6b3d70c78ee4"",
+                    ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KeyboardMouse"",
-                    ""action"": ""CloseInventory"",
+                    ""action"": ""Back"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""89fdc884-125c-4a6e-b376-b6c2abc23ec7"",
-                    ""path"": ""<Keyboard>/escape"",
+                    ""id"": ""856ef669-e439-4c10-bd2d-411229858f20"",
+                    ""path"": ""<Keyboard>/i"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KeyboardMouse"",
-                    ""action"": ""CloseInventory"",
+                    ""action"": ""Inventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1e50af93-a816-455d-b194-9be9fcaad51d"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""Crafting"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -393,10 +408,13 @@ namespace Systems.Core
             m_ThirdPersonPlayer_Jump = m_ThirdPersonPlayer.FindAction("Jump", throwIfNotFound: true);
             m_ThirdPersonPlayer_Sprint = m_ThirdPersonPlayer.FindAction("Sprint", throwIfNotFound: true);
             m_ThirdPersonPlayer_Interact = m_ThirdPersonPlayer.FindAction("Interact", throwIfNotFound: true);
-            m_ThirdPersonPlayer_Inventory = m_ThirdPersonPlayer.FindAction("Inventory", throwIfNotFound: true);
             // Inventory
             m_Inventory = asset.FindActionMap("Inventory", throwIfNotFound: true);
-            m_Inventory_CloseInventory = m_Inventory.FindAction("CloseInventory", throwIfNotFound: true);
+            // UiShortcuts
+            m_UiShortcuts = asset.FindActionMap("UiShortcuts", throwIfNotFound: true);
+            m_UiShortcuts_Back = m_UiShortcuts.FindAction("Back", throwIfNotFound: true);
+            m_UiShortcuts_Inventory = m_UiShortcuts.FindAction("Inventory", throwIfNotFound: true);
+            m_UiShortcuts_Crafting = m_UiShortcuts.FindAction("Crafting", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -463,7 +481,6 @@ namespace Systems.Core
         private readonly InputAction m_ThirdPersonPlayer_Jump;
         private readonly InputAction m_ThirdPersonPlayer_Sprint;
         private readonly InputAction m_ThirdPersonPlayer_Interact;
-        private readonly InputAction m_ThirdPersonPlayer_Inventory;
         public struct ThirdPersonPlayerActions
         {
             private @Inputs m_Wrapper;
@@ -473,7 +490,6 @@ namespace Systems.Core
             public InputAction @Jump => m_Wrapper.m_ThirdPersonPlayer_Jump;
             public InputAction @Sprint => m_Wrapper.m_ThirdPersonPlayer_Sprint;
             public InputAction @Interact => m_Wrapper.m_ThirdPersonPlayer_Interact;
-            public InputAction @Inventory => m_Wrapper.m_ThirdPersonPlayer_Inventory;
             public InputActionMap Get() { return m_Wrapper.m_ThirdPersonPlayer; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -498,9 +514,6 @@ namespace Systems.Core
                 @Interact.started += instance.OnInteract;
                 @Interact.performed += instance.OnInteract;
                 @Interact.canceled += instance.OnInteract;
-                @Inventory.started += instance.OnInventory;
-                @Inventory.performed += instance.OnInventory;
-                @Inventory.canceled += instance.OnInventory;
             }
 
             private void UnregisterCallbacks(IThirdPersonPlayerActions instance)
@@ -520,9 +533,6 @@ namespace Systems.Core
                 @Interact.started -= instance.OnInteract;
                 @Interact.performed -= instance.OnInteract;
                 @Interact.canceled -= instance.OnInteract;
-                @Inventory.started -= instance.OnInventory;
-                @Inventory.performed -= instance.OnInventory;
-                @Inventory.canceled -= instance.OnInventory;
             }
 
             public void RemoveCallbacks(IThirdPersonPlayerActions instance)
@@ -544,12 +554,10 @@ namespace Systems.Core
         // Inventory
         private readonly InputActionMap m_Inventory;
         private List<IInventoryActions> m_InventoryActionsCallbackInterfaces = new List<IInventoryActions>();
-        private readonly InputAction m_Inventory_CloseInventory;
         public struct InventoryActions
         {
             private @Inputs m_Wrapper;
             public InventoryActions(@Inputs wrapper) { m_Wrapper = wrapper; }
-            public InputAction @CloseInventory => m_Wrapper.m_Inventory_CloseInventory;
             public InputActionMap Get() { return m_Wrapper.m_Inventory; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -559,16 +567,10 @@ namespace Systems.Core
             {
                 if (instance == null || m_Wrapper.m_InventoryActionsCallbackInterfaces.Contains(instance)) return;
                 m_Wrapper.m_InventoryActionsCallbackInterfaces.Add(instance);
-                @CloseInventory.started += instance.OnCloseInventory;
-                @CloseInventory.performed += instance.OnCloseInventory;
-                @CloseInventory.canceled += instance.OnCloseInventory;
             }
 
             private void UnregisterCallbacks(IInventoryActions instance)
             {
-                @CloseInventory.started -= instance.OnCloseInventory;
-                @CloseInventory.performed -= instance.OnCloseInventory;
-                @CloseInventory.canceled -= instance.OnCloseInventory;
             }
 
             public void RemoveCallbacks(IInventoryActions instance)
@@ -586,6 +588,68 @@ namespace Systems.Core
             }
         }
         public InventoryActions @Inventory => new InventoryActions(this);
+
+        // UiShortcuts
+        private readonly InputActionMap m_UiShortcuts;
+        private List<IUiShortcutsActions> m_UiShortcutsActionsCallbackInterfaces = new List<IUiShortcutsActions>();
+        private readonly InputAction m_UiShortcuts_Back;
+        private readonly InputAction m_UiShortcuts_Inventory;
+        private readonly InputAction m_UiShortcuts_Crafting;
+        public struct UiShortcutsActions
+        {
+            private @Inputs m_Wrapper;
+            public UiShortcutsActions(@Inputs wrapper) { m_Wrapper = wrapper; }
+            public InputAction @Back => m_Wrapper.m_UiShortcuts_Back;
+            public InputAction @Inventory => m_Wrapper.m_UiShortcuts_Inventory;
+            public InputAction @Crafting => m_Wrapper.m_UiShortcuts_Crafting;
+            public InputActionMap Get() { return m_Wrapper.m_UiShortcuts; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(UiShortcutsActions set) { return set.Get(); }
+            public void AddCallbacks(IUiShortcutsActions instance)
+            {
+                if (instance == null || m_Wrapper.m_UiShortcutsActionsCallbackInterfaces.Contains(instance)) return;
+                m_Wrapper.m_UiShortcutsActionsCallbackInterfaces.Add(instance);
+                @Back.started += instance.OnBack;
+                @Back.performed += instance.OnBack;
+                @Back.canceled += instance.OnBack;
+                @Inventory.started += instance.OnInventory;
+                @Inventory.performed += instance.OnInventory;
+                @Inventory.canceled += instance.OnInventory;
+                @Crafting.started += instance.OnCrafting;
+                @Crafting.performed += instance.OnCrafting;
+                @Crafting.canceled += instance.OnCrafting;
+            }
+
+            private void UnregisterCallbacks(IUiShortcutsActions instance)
+            {
+                @Back.started -= instance.OnBack;
+                @Back.performed -= instance.OnBack;
+                @Back.canceled -= instance.OnBack;
+                @Inventory.started -= instance.OnInventory;
+                @Inventory.performed -= instance.OnInventory;
+                @Inventory.canceled -= instance.OnInventory;
+                @Crafting.started -= instance.OnCrafting;
+                @Crafting.performed -= instance.OnCrafting;
+                @Crafting.canceled -= instance.OnCrafting;
+            }
+
+            public void RemoveCallbacks(IUiShortcutsActions instance)
+            {
+                if (m_Wrapper.m_UiShortcutsActionsCallbackInterfaces.Remove(instance))
+                    UnregisterCallbacks(instance);
+            }
+
+            public void SetCallbacks(IUiShortcutsActions instance)
+            {
+                foreach (var item in m_Wrapper.m_UiShortcutsActionsCallbackInterfaces)
+                    UnregisterCallbacks(item);
+                m_Wrapper.m_UiShortcutsActionsCallbackInterfaces.Clear();
+                AddCallbacks(instance);
+            }
+        }
+        public UiShortcutsActions @UiShortcuts => new UiShortcutsActions(this);
         private int m_KeyboardMouseSchemeIndex = -1;
         public InputControlScheme KeyboardMouseScheme
         {
@@ -629,11 +693,15 @@ namespace Systems.Core
             void OnJump(InputAction.CallbackContext context);
             void OnSprint(InputAction.CallbackContext context);
             void OnInteract(InputAction.CallbackContext context);
-            void OnInventory(InputAction.CallbackContext context);
         }
         public interface IInventoryActions
         {
-            void OnCloseInventory(InputAction.CallbackContext context);
+        }
+        public interface IUiShortcutsActions
+        {
+            void OnBack(InputAction.CallbackContext context);
+            void OnInventory(InputAction.CallbackContext context);
+            void OnCrafting(InputAction.CallbackContext context);
         }
     }
 }

@@ -37,7 +37,7 @@ namespace Systems.UI
 
             itemNameText.enabled = false;
         }
-
+        
         void Update()
         {
             if (!selectedItemMeshRenderer) return;
@@ -58,8 +58,6 @@ namespace Systems.UI
 
             onItemReleasedListener = new EventListener(OnItemReleased);
             EventManager.RegisterListener<ItemReleasedEvent>(onItemReleasedListener);
-
-            GameManager.Instance.onGameStateChanged += TryShowPanel;
         }
 
         void UnsubscribeEvents()
@@ -69,11 +67,9 @@ namespace Systems.UI
 
             EventManager.UnregisterListener<ItemReleasedEvent>(onItemReleasedListener);
             onItemReleasedListener = null;
-            
-            GameManager.Instance.onGameStateChanged -= TryShowPanel;
         }
 
-        void TryShowPanel(Type state)
+        protected override void TryShowPanel(Type state)
         {
             CachedGameObject.SetActive(state == typeof(ThirdPersonPlayerGameState));
         }
