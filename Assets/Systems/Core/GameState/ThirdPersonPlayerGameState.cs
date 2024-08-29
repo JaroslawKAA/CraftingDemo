@@ -6,7 +6,7 @@ namespace Systems.Core.GameState
 {
     public class ThirdPersonPlayerGameState : GameStateBase
     {
-        Inputs.ThirdPersonPlayerActions ThirdPersonPlayerActions = InputsManager.Inputs.ThirdPersonPlayer;
+        Inputs.ThirdPersonPlayerActions thirdPersonPlayerActions = InputsManager.Inputs.ThirdPersonPlayer;
         
         public ThirdPersonPlayerGameState(StateMachineBase stateMachineBase, MonoBehaviour context) 
             : base(stateMachineBase, context)
@@ -16,18 +16,18 @@ namespace Systems.Core.GameState
         public override void OnEnter()
         {
             base.OnEnter();
-            ThirdPersonPlayerActions.Enable();
-            ThirdPersonPlayerActions.Inventory.performed += ToInventoryState;
+            thirdPersonPlayerActions.Enable();
+            thirdPersonPlayerActions.Inventory.performed += ToInventoryState;
         }
 
         public override void OnExit()
         {
             base.OnExit();
-            ThirdPersonPlayerActions.Disable();
-            ThirdPersonPlayerActions.Inventory.performed -= ToInventoryState;
+            thirdPersonPlayerActions.Disable();
+            thirdPersonPlayerActions.Inventory.performed -= ToInventoryState;
         }
 
-        void ToInventoryState(InputAction.CallbackContext context)
+        void ToInventoryState(InputAction.CallbackContext _)
         {
             gameStateMachine.TransitionTo(GameStateMachine.State.Inventory);
         }

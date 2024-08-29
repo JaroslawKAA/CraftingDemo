@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Systems.Core.Services;
 using UnityEngine;
 
 namespace Systems.Items
@@ -31,8 +32,11 @@ namespace Systems.Items
         static void LoadItemTypes()
         {
             Item[] allItems = Resources.LoadAll<Item>("Items");
-            foreach (Item item in allItems) 
+            foreach (Item item in allItems)
+            {
                 itemTypes.Add(item.Guid, item);
+                ServicesManager.ItemsService.RegisterItem(new ItemData(item.Guid, item.ItemName));
+            }
         }
     }
 }

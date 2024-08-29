@@ -295,6 +295,45 @@ namespace Systems.Core
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Inventory"",
+            ""id"": ""b3e3dcf2-b6d7-4cfc-b094-65b5140dc2ac"",
+            ""actions"": [
+                {
+                    ""name"": ""CloseInventory"",
+                    ""type"": ""Button"",
+                    ""id"": ""5410d3b1-3d0a-4080-8be8-0635ff10bc55"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""f4b8cb4e-59ca-4f6a-883d-eac34418be7c"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""CloseInventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""89fdc884-125c-4a6e-b376-b6c2abc23ec7"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""CloseInventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -355,6 +394,9 @@ namespace Systems.Core
             m_ThirdPersonPlayer_Sprint = m_ThirdPersonPlayer.FindAction("Sprint", throwIfNotFound: true);
             m_ThirdPersonPlayer_Interact = m_ThirdPersonPlayer.FindAction("Interact", throwIfNotFound: true);
             m_ThirdPersonPlayer_Inventory = m_ThirdPersonPlayer.FindAction("Inventory", throwIfNotFound: true);
+            // Inventory
+            m_Inventory = asset.FindActionMap("Inventory", throwIfNotFound: true);
+            m_Inventory_CloseInventory = m_Inventory.FindAction("CloseInventory", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -498,6 +540,52 @@ namespace Systems.Core
             }
         }
         public ThirdPersonPlayerActions @ThirdPersonPlayer => new ThirdPersonPlayerActions(this);
+
+        // Inventory
+        private readonly InputActionMap m_Inventory;
+        private List<IInventoryActions> m_InventoryActionsCallbackInterfaces = new List<IInventoryActions>();
+        private readonly InputAction m_Inventory_CloseInventory;
+        public struct InventoryActions
+        {
+            private @Inputs m_Wrapper;
+            public InventoryActions(@Inputs wrapper) { m_Wrapper = wrapper; }
+            public InputAction @CloseInventory => m_Wrapper.m_Inventory_CloseInventory;
+            public InputActionMap Get() { return m_Wrapper.m_Inventory; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(InventoryActions set) { return set.Get(); }
+            public void AddCallbacks(IInventoryActions instance)
+            {
+                if (instance == null || m_Wrapper.m_InventoryActionsCallbackInterfaces.Contains(instance)) return;
+                m_Wrapper.m_InventoryActionsCallbackInterfaces.Add(instance);
+                @CloseInventory.started += instance.OnCloseInventory;
+                @CloseInventory.performed += instance.OnCloseInventory;
+                @CloseInventory.canceled += instance.OnCloseInventory;
+            }
+
+            private void UnregisterCallbacks(IInventoryActions instance)
+            {
+                @CloseInventory.started -= instance.OnCloseInventory;
+                @CloseInventory.performed -= instance.OnCloseInventory;
+                @CloseInventory.canceled -= instance.OnCloseInventory;
+            }
+
+            public void RemoveCallbacks(IInventoryActions instance)
+            {
+                if (m_Wrapper.m_InventoryActionsCallbackInterfaces.Remove(instance))
+                    UnregisterCallbacks(instance);
+            }
+
+            public void SetCallbacks(IInventoryActions instance)
+            {
+                foreach (var item in m_Wrapper.m_InventoryActionsCallbackInterfaces)
+                    UnregisterCallbacks(item);
+                m_Wrapper.m_InventoryActionsCallbackInterfaces.Clear();
+                AddCallbacks(instance);
+            }
+        }
+        public InventoryActions @Inventory => new InventoryActions(this);
         private int m_KeyboardMouseSchemeIndex = -1;
         public InputControlScheme KeyboardMouseScheme
         {
@@ -542,6 +630,10 @@ namespace Systems.Core
             void OnSprint(InputAction.CallbackContext context);
             void OnInteract(InputAction.CallbackContext context);
             void OnInventory(InputAction.CallbackContext context);
+        }
+        public interface IInventoryActions
+        {
+            void OnCloseInventory(InputAction.CallbackContext context);
         }
     }
 }

@@ -1,5 +1,6 @@
 using Systems.Core.GameEvents;
 using Systems.Core.GameEvents.Events;
+using Systems.Core.Services;
 using Systems.Player;
 using UnityEngine;
 
@@ -13,6 +14,8 @@ public class Player : MonoBehaviour
     {
         itemPickedUpListener = new EventListener(OnItemPickedUp);
         EventManager.RegisterListener<PickUpItemEvent>(itemPickedUpListener);
+        
+        ServicesManager.PlayerInventoryService.SetPlayerInventory(inventory.ItemsCount);
     }
 
     void OnDestroy()

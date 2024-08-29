@@ -25,8 +25,10 @@ namespace Systems.Core
         public event Action<Type> onGameStateChanged; 
 
         // UNITY EVENTS
-        void Awake()
+        protected override void Awake()
         {
+            base.Awake();
+            
             gameStateMachine = new GameStateMachine(context: this);
             gameStateMachine.onStateChanged += OnGameStateChanged;
         }
@@ -51,7 +53,7 @@ namespace Systems.Core
         }
 
         // METHODS
-        void OnGameStateChanged(StateBase state) => onGameStateChanged?.Invoke(typeof(StateBase));
+        void OnGameStateChanged(StateBase state) => onGameStateChanged?.Invoke(state.GetType());
 
         void SpawnPlayer()
         {

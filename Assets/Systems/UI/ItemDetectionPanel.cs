@@ -1,13 +1,15 @@
 using System;
 using Sirenix.OdinInspector;
+using Systems.Core;
 using Systems.Core.GameEvents;
 using Systems.Core.GameEvents.Events;
+using Systems.Core.GameState;
 using TMPro;
 using UnityEngine;
 
 namespace Systems.UI
 {
-    public class ItemDetectionPanel : MonoBehaviour
+    public class ItemDetectionPanel : UiPanel
     {
         // SERIALIZED
         [Title("Depend")]
@@ -24,14 +26,12 @@ namespace Systems.UI
         MeshRenderer selectedItemMeshRenderer;
         Transform selectedItemTransform;
 
-        // UNITY EVENTS
-        void Awake()
-        {
-            onItemDetectedListener = new EventListener(OnItemDetected);
-            EventManager.RegisterListener<ItemDetectedEvent>(onItemDetectedListener);
 
-            onItemReleasedListener = new EventListener(OnItemReleased);
-            EventManager.RegisterListener<ItemReleasedEvent>(onItemReleasedListener);
+        // UNITY EVENTS
+        protected override void Start()
+        {
+            base.Start();
+            SubscribeEvents();
 
             mainCamera = Camera.main;
 
@@ -43,6 +43,39 @@ namespace Systems.UI
             if (!selectedItemMeshRenderer) return;
 
             SetItemNameTextAboveItem();
+        }
+
+        void OnDestroy()
+        {
+            UnsubscribeEvents();
+        }
+
+        // METHODS
+        void SubscribeEvents()
+        {
+            onItemDetectedListener = new EventListener(OnItemDetected);
+            EventManager.RegisterListener<ItemDetectedEvent>(onItemDetectedListener);
+
+            onItemReleasedListener = new EventListener(OnItemReleased);
+            EventManager.RegisterListener<ItemReleasedEvent>(onItemReleasedListener);
+
+            GameManager.Instance.onGameStateChanged += TryShowPanel;
+        }
+
+        void UnsubscribeEvents()
+        {
+            EventManager.UnregisterListener<ItemDetectedEvent>(onItemReleasedListener);
+            onItemDetectedListener = null;
+
+            EventManager.UnregisterListener<ItemReleasedEvent>(onItemReleasedListener);
+            onItemReleasedListener = null;
+            
+            GameManager.Instance.onGameStateChanged -= TryShowPanel;
+        }
+
+        void TryShowPanel(Type state)
+        {
+            CachedGameObject.SetActive(state == typeof(ThirdPersonPlayerGameState));
         }
 
         void SetItemNameTextAboveItem()
@@ -59,13 +92,6 @@ namespace Systems.UI
             itemNameRectTransform.anchoredPosition = itemNameTextCanvasPosition;
         }
 
-        void OnDestroy()
-        {
-            EventManager.UnregisterListener<ItemDetectedEvent>(onItemReleasedListener);
-            onItemDetectedListener = null;
-        }
-
-        // METHODS
         void OnItemDetected(EventBase eventBase)
         {
             ItemDetectedEvent itemDetectedEvent = eventBase as ItemDetectedEvent;

@@ -12,10 +12,12 @@ namespace Systems.Core.GameState
             Crafting,
         }
         
+        // PROPERTIES
         ThirdPersonPlayerGameState ThirdPersonPlayerGameState { get; }
         InventoryGameState InventoryGameState { get; }
         CraftingGameState CraftingGameState { get; }
 
+        // METHODS
         public GameStateMachine(MonoBehaviour context)
         {
             ThirdPersonPlayerGameState = new ThirdPersonPlayerGameState(this, context);
