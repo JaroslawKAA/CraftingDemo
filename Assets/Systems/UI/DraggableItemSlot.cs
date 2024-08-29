@@ -7,9 +7,12 @@ namespace Systems.UI
     {
         public void OnDrop(PointerEventData eventData)
         {
-            GameObject dropped = eventData.pointerDrag;
-            DraggableItem draggableItem = dropped.GetComponent<DraggableItem>();
-            draggableItem.ParentAfterDrag = transform;
+            if(transform.childCount == 0)
+            {
+                GameObject dropped = eventData.pointerDrag;
+                DraggableItem draggableItem = dropped.GetComponent<DraggableItem>();
+                draggableItem.ParentAfterDrag = transform;
+            }
         }
     }
 }
