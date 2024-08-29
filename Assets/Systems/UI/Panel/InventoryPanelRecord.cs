@@ -2,7 +2,7 @@ using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
 
-namespace Systems.UI
+namespace Systems.UI.Panel
 {
     public class InventoryPanelRecord : MonoBehaviour
     {

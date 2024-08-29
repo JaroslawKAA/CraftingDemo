@@ -3,7 +3,7 @@ using Sirenix.OdinInspector;
 using Systems.Core;
 using UnityEngine;
 
-namespace Systems.UI
+namespace Systems.UI.Panel
 {
     public abstract class UiPanel : MonoBehaviour
     {
@@ -25,7 +25,7 @@ namespace Systems.UI
             GameManager.Instance.onGameStateChanged += TryShowPanel;
         }
 
-        protected void OnDestroy()
+        protected virtual void OnDestroy()
         {
             GameManager.Instance.onGameStateChanged -= TryShowPanel;
         }

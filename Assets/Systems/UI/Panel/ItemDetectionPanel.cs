@@ -1,13 +1,12 @@
 using System;
 using Sirenix.OdinInspector;
-using Systems.Core;
 using Systems.Core.GameEvents;
 using Systems.Core.GameEvents.Events;
 using Systems.Core.GameState;
 using TMPro;
 using UnityEngine;
 
-namespace Systems.UI
+namespace Systems.UI.Panel
 {
     public class ItemDetectionPanel : UiPanel
     {

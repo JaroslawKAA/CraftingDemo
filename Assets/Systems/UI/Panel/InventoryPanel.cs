@@ -5,7 +5,7 @@ using Systems.Core.GameState;
 using Systems.Core.Services;
 using UnityEngine;
 
-namespace Systems.UI
+namespace Systems.UI.Panel
 {
     public class InventoryPanel : UiPanel
     {
