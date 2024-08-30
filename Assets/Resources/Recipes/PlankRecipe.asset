@@ -15,7 +15,7 @@ MonoBehaviour:
   firstItem: {fileID: 11400000, guid: 8137cc4668e12cd41a3d6795a3aedc25, type: 2}
   secondItem: {fileID: 11400000, guid: 8137cc4668e12cd41a3d6795a3aedc25, type: 2}
   result: {fileID: 11400000, guid: ed1edfd80f2e6e54bb0253136cc2578c, type: 2}
-  successChance: 90
+  successChance: 100
   onCraftingSuccess:
     m_PersistentCalls:
       m_Calls: []

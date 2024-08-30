@@ -53,6 +53,7 @@ namespace Systems.Core
         }
 
         // METHODS
+        public GameObject InstantiateGO(GameObject itemPrefab) => Instantiate(itemPrefab);
         void OnGameStateChanged(StateBase state) => onGameStateChanged?.Invoke(state.GetType());
 
         void SpawnPlayer()
