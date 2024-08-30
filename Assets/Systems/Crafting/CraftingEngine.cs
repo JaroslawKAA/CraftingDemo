@@ -1,0 +1,99 @@
+using System.Collections.Generic;
+using Systems.Core.GameEvents;
+using Systems.Core.GameEvents.Events;
+using UnityEngine;
+
+namespace Systems.Crafting
+{
+    public class CraftingEngine : MonoBehaviour
+    {
+        const int MinRandomChance = 0;
+        const int MaxRandomChanceExclusive = 101;
+        
+        // PRIVATE
+        Dictionary<string, CraftingRecipe> quickRecipeAccess = new();
+
+        EventListener craftRequestListener;
+
+        // UNITY EVENTS
+        void Awake()
+        {
+            LoadRecipes();
+            SubscribeEvents();
+        }
+
+        void Start()
+        {
+            UnsubscribeEvents();
+        }
+
+        // METHODS
+        void LoadRecipes()
+        {
+            CraftingRecipe[] allRecipes = Resources.LoadAll<CraftingRecipe>("Recipes");
+            foreach (CraftingRecipe craftingRecipe in allRecipes)
+            {
+                string recipeKey = craftingRecipe.firstItem.Guid + craftingRecipe.secondItem.Guid;
+                quickRecipeAccess.Add(recipeKey, craftingRecipe);
+
+                string invertedRecipeKey = craftingRecipe.secondItem.Guid + craftingRecipe.firstItem.Guid;
+                quickRecipeAccess.Add(invertedRecipeKey, craftingRecipe);
+            }
+        }
+
+        void SubscribeEvents()
+        {
+            craftRequestListener = new EventListener(OnCraftRequested);
+            EventManager.RegisterListener<CraftRequestEvent>(craftRequestListener);
+        }
+
+        void UnsubscribeEvents()
+        {
+            EventManager.UnregisterListener<CraftRequestEvent>(craftRequestListener);
+            craftRequestListener = null;
+        }
+
+        void OnCraftRequested(EventBase eventBase)
+        {
+            CraftRequestEvent craftRequestEvent = eventBase as CraftRequestEvent;
+            if (TryGetRecipe(craftRequestEvent, out CraftingRecipe craftingRecipe))
+            {
+                int chance = Random.Range(MinRandomChance, MaxRandomChanceExclusive);
+                if (chance >= craftingRecipe.successChance)
+                {
+                    craftingRecipe.onCraftingSuccess?.Invoke();
+                    TriggerConsumingItems(craftingRecipe);
+                    EventManager.TriggerEvent(new AddItemToPlayerInventoryEvent(craftingRecipe.result.Guid));
+                    EventManager.TriggerEvent(new CraftingCompletedEvent(craftingRecipe.result.Guid));
+                    Debug.Log("Crafting success");
+                }
+                else
+                {
+                    craftingRecipe.onCraftingFailed?.Invoke();
+                    TriggerConsumingItems(craftingRecipe);
+                    EventManager.TriggerEvent(new CraftingCompletedEvent(null));
+                    Debug.Log("Crafting failed");
+                }
+            }
+            else
+            {
+                TriggerConsumingItems(craftingRecipe);
+                EventManager.TriggerEvent(new CraftingCompletedEvent(null));
+                Debug.Log("No crafting recipe for chosen items");
+            }
+        }
+
+        static void TriggerConsumingItems(CraftingRecipe craftingRecipe)
+        {
+            EventManager.TriggerEvent(new RemoveItemFromPlayerInventoryEvent(craftingRecipe.firstItem.Guid));
+            EventManager.TriggerEvent(new RemoveItemFromPlayerInventoryEvent(craftingRecipe.secondItem.Guid));
+        }
+
+        bool TryGetRecipe(CraftRequestEvent craftRequestEvent, out CraftingRecipe craftingRecipe)
+        {
+            string key = craftRequestEvent.FirstItemGuid + craftRequestEvent.SecondItemGuid;
+            craftingRecipe = quickRecipeAccess[key];
+            return craftingRecipe != null;
+        }
+    }
+}

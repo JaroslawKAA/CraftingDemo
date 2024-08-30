@@ -40,7 +40,7 @@ namespace Systems.Items
         // METHODS
         public void Interact()
         {
-            EventManager.TriggerEvent(new PickUpItemEvent(Item.Guid));
+            EventManager.TriggerEvent(new AddItemToPlayerInventoryEvent(Item.Guid));
             
             // TODO Return item to pool
             Destroy(gameObject);

@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0505b2f00a889a04e822b27f95b5b894, type: 3}
+  m_Name: PlankRecipe
+  m_EditorClassIdentifier: 
+  firstItem: {fileID: 11400000, guid: 8137cc4668e12cd41a3d6795a3aedc25, type: 2}
+  secondItem: {fileID: 11400000, guid: 8137cc4668e12cd41a3d6795a3aedc25, type: 2}
+  result: {fileID: 11400000, guid: ed1edfd80f2e6e54bb0253136cc2578c, type: 2}
+  successChance: 90
+  onCraftingSuccess:
+    m_PersistentCalls:
+      m_Calls: []
+  onCraftingFailed:
+    m_PersistentCalls:
+      m_Calls: []
