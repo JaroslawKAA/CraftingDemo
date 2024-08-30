@@ -14,8 +14,8 @@ namespace Systems.UI.Panel
         [field: SerializeField] [field: ReadOnly] public string ItemGuid { get; private set; }
         [field: SerializeField] [field: ReadOnly] public string ItemName { get; private set; }
         [field: SerializeField] [field: ReadOnly] public int ItemCount { get; private set; }
+        [field: SerializeField] [field: ReadOnly] public GameObject CachedGameObject { get; private set; }
         public DraggableItem DraggableItem => draggableItem;
-        public GameObject CachedGameObject { get; private set; }
 
         public void Init(string itemGuid, string itemName, int itemCount)
         {

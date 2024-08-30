@@ -59,8 +59,8 @@ namespace Systems.Crafting
             CraftRequestEvent craftRequestEvent = eventBase as CraftRequestEvent;
             if (TryGetRecipe(craftRequestEvent, out CraftingRecipe craftingRecipe))
             {
-                int chance = Random.Range(MinRandomChance, MaxRandomChanceExclusive);
-                if (chance >= craftingRecipe.successChance)
+                int rnd = Random.Range(MinRandomChance, MaxRandomChanceExclusive);
+                if (craftingRecipe.successChance >= rnd)
                 {
                     craftingRecipe.onCraftingSuccess?.Invoke();
                     TriggerConsumingItems(craftingRecipe.firstItem.Guid, craftingRecipe.secondItem.Guid);
@@ -70,17 +70,17 @@ namespace Systems.Crafting
                 }
                 else
                 {
+                    Debug.Log("Crafting failed");
                     craftingRecipe.onCraftingFailed?.Invoke();
                     TriggerConsumingItems(craftingRecipe.firstItem.Guid, craftingRecipe.secondItem.Guid);
                     EventManager.TriggerEvent(new CraftingCompletedEvent(null));
-                    Debug.Log("Crafting failed");
                 }
             }
             else
             {
+                Debug.Log("No crafting recipe for chosen items");
                 TriggerConsumingItems(craftRequestEvent.FirstItemGuid, craftRequestEvent.SecondItemGuid);
                 EventManager.TriggerEvent(new CraftingCompletedEvent(null));
-                Debug.Log("No crafting recipe for chosen items");
             }
         }
 
@@ -94,7 +94,7 @@ namespace Systems.Crafting
         {
             string key = craftRequestEvent.FirstItemGuid + craftRequestEvent.SecondItemGuid;
             craftingRecipe = null;
-            return quickRecipeAccess.TryGetValue(key, out CraftingRecipe recipe);
+            return quickRecipeAccess.TryGetValue(key, out craftingRecipe);
         }
     }
 }

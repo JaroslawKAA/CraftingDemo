@@ -52,6 +52,18 @@ namespace Systems.UI.Panel
 
 
         // METHODS
+        InventoryPanelRecord InstantiateInventoryPanelRecord(string itemGuid, int itemCount, Transform parent)
+        {
+            ItemData itemData = ServicesManager.ItemsService.GetItem(itemGuid);
+                
+            InventoryPanelRecord record = Instantiate(recordPrefab, parent);
+            record.Init(itemGuid, itemData.Name, itemCount);
+            record.DraggableItem.PreviousSlot = inventoryDraggableItemSlot;
+            itemRecords.Add(itemGuid, record);
+
+            return record;
+        }
+
         protected override void TryShowPanel(Type state)
         {
             CachedGameObject.SetActive(state == typeof(InventoryGameState)
@@ -64,12 +76,7 @@ namespace Systems.UI.Panel
             
             foreach ((string itemGuid, int itemCount) in ServicesManager.PlayerInventoryService.PlayerInventory)
             {
-                ItemData itemData = ServicesManager.ItemsService.GetItem(itemGuid);
-                
-                InventoryPanelRecord record = Instantiate(recordPrefab, recordsParent);
-                record.Init(itemGuid, itemData.Name, itemCount);
-                record.DraggableItem.PreviousSlot = inventoryDraggableItemSlot;
-                itemRecords.Add(itemGuid, record);
+                InstantiateInventoryPanelRecord(itemGuid, itemCount, recordsParent);
             }
         }
 

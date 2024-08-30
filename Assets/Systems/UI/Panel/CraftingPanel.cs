@@ -14,7 +14,6 @@ namespace Systems.UI.Panel
         [Title("Depend")]
         [SerializeField] [Required] RectTransform firstSlotRectTransform;
         [SerializeField] [Required] RectTransform secondSlotRectTransform;
-        [SerializeField] [Required] RectTransform resultSlotRectTransform;
         [SerializeField] [Required] Button craftButton;
 
         // PRIVATE
@@ -41,7 +40,7 @@ namespace Systems.UI.Panel
         {
             CachedGameObject.SetActive(state == typeof(CraftingGameState));
         }
-        
+
         void SubscribeEvents()
         {
             craftButton.onClick.AddListener(Craft);
@@ -62,13 +61,16 @@ namespace Systems.UI.Panel
         {
             if (crafting) return;
 
-            InventoryPanelRecord inventoryPanelRecord1 = firstSlotRectTransform.GetComponentInChildren<InventoryPanelRecord>();
-            InventoryPanelRecord inventoryPanelRecord2 = secondSlotRectTransform.GetComponentInChildren<InventoryPanelRecord>();
+            InventoryPanelRecord inventoryPanelRecord1 =
+                firstSlotRectTransform.GetComponentInChildren<InventoryPanelRecord>();
+            InventoryPanelRecord inventoryPanelRecord2 =
+                secondSlotRectTransform.GetComponentInChildren<InventoryPanelRecord>();
 
             if (inventoryPanelRecord1 != null && inventoryPanelRecord2 != null)
             {
                 crafting = true;
-                EventManager.TriggerEvent(new CraftRequestEvent(inventoryPanelRecord1.ItemGuid, inventoryPanelRecord2.ItemGuid));
+                EventManager.TriggerEvent(new CraftRequestEvent(inventoryPanelRecord1.ItemGuid,
+                    inventoryPanelRecord2.ItemGuid));
                 Debug.Log("Crafting requested");
             }
         }
@@ -77,16 +79,18 @@ namespace Systems.UI.Panel
         {
             Debug.Log("Crafting completed");
             CraftingCompletedEvent craftingCompletedEvent = eventBase as CraftingCompletedEvent;
-            
-            // DestroyRecordsInSlots();
+
+            DestroyRecordsInSlots();
             EventManager.TriggerEvent(new RefreshInventoryRequestEvent());
             crafting = false;
         }
 
         void DestroyRecordsInSlots()
         {
-            InventoryPanelRecord inventoryPanelRecord1 = firstSlotRectTransform.GetComponentInChildren<InventoryPanelRecord>();
-            InventoryPanelRecord inventoryPanelRecord2 = secondSlotRectTransform.GetComponentInChildren<InventoryPanelRecord>();
+            InventoryPanelRecord inventoryPanelRecord1 =
+                firstSlotRectTransform.GetComponentInChildren<InventoryPanelRecord>();
+            InventoryPanelRecord inventoryPanelRecord2 =
+                secondSlotRectTransform.GetComponentInChildren<InventoryPanelRecord>();
             Destroy(inventoryPanelRecord1.CachedGameObject);
             Destroy(inventoryPanelRecord2.CachedGameObject);
         }
