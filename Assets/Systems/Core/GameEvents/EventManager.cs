@@ -1,37 +1,41 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Systems.Core.GameEvents
 {
     public static class EventManager
     {
-        static Dictionary<Type, List<EventListener>> eventListeners = new();
+        static Dictionary<Type, List<EventListener>> events = new();
 
         public static void RegisterListener<T>(EventListener listener) where T : EventBase
         {
             Type eventType = typeof(T);
-            if (!eventListeners.ContainsKey(eventType))
+            if (!events.ContainsKey(eventType))
             {
-                eventListeners[eventType] = new List<EventListener>();
+                events[eventType] = new List<EventListener>();
             }
-            eventListeners[eventType].Add(listener);
+            events[eventType].Add(listener);
         }
 
         public static void UnregisterListener<T>(EventListener listener) where T : EventBase
         {
             Type eventType = typeof(T);
-            if (eventListeners.ContainsKey(eventType))
+            if (events.ContainsKey(eventType))
             {
-                eventListeners[eventType].Remove(listener);
+                events[eventType].Remove(listener);
             }
         }
 
         public static void TriggerEvent<T>(T eventInstance) where T : EventBase
         {
             Type eventType = typeof(T);
-            if (eventListeners.ContainsKey(eventType))
+            
+            Debug.Log($"EventManager.TriggerEvent {eventType}");
+            
+            if (events.TryGetValue(eventType, out List<EventListener> eventListeners))
             {
-                foreach (EventListener listener in eventListeners[eventType])
+                foreach (EventListener listener in eventListeners)
                 {
                     listener.OnEvent(eventInstance);
                 }

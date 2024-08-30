@@ -15,6 +15,7 @@ namespace Systems.UI.Panel
         [Title("Depend")]
         [SerializeField] [Required] InventoryPanelRecord recordPrefab;
         [SerializeField] [Required] RectTransform recordsParent;
+        [SerializeField] [Required] InventoryDraggableItemSlot inventoryDraggableItemSlot;
 
         // PRIVATE
         readonly Dictionary<string, InventoryPanelRecord> itemRecords = new();
@@ -64,8 +65,10 @@ namespace Systems.UI.Panel
             foreach ((string itemGuid, int itemCount) in ServicesManager.PlayerInventoryService.PlayerInventory)
             {
                 ItemData itemData = ServicesManager.ItemsService.GetItem(itemGuid);
+                
                 InventoryPanelRecord record = Instantiate(recordPrefab, recordsParent);
                 record.Init(itemGuid, itemData.Name, itemCount);
+                record.DraggableItem.PreviousSlot = inventoryDraggableItemSlot;
                 itemRecords.Add(itemGuid, record);
             }
         }

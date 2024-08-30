@@ -19,7 +19,7 @@ namespace Systems.UI.Panel
 
         // PRIVATE
         [Title("Debug")]
-        [SerializeField] bool crafting;
+        [SerializeField] [ReadOnly] bool crafting;
 
         EventListener craftingCompletedListener;
 

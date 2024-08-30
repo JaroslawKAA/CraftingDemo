@@ -12,8 +12,10 @@ namespace Systems.UI
         [SerializeField] [Required] Image image;
         [SerializeField] [Required] TMP_Text tmpText;
         
-        public Transform ParentAfterDrag { get; set; }
-        
+        [Title("Debug")]
+        [ShowInInspector] [ReadOnly] public Transform ParentAfterDrag { get; set; }
+        [ShowInInspector] [ReadOnly] public DraggableSlotBase PreviousSlot { get; set; }
+
         public void OnBeginDrag(PointerEventData eventData)
         {
             Debug.Log("Begin drag item");
@@ -21,8 +23,7 @@ namespace Systems.UI
             transform.SetParent(transform.root);
             transform.SetAsLastSibling();
 
-            image.raycastTarget = false;
-            tmpText.raycastTarget = false;
+            DisableRaycastTarget();
         }
 
         public void OnDrag(PointerEventData eventData)
@@ -34,8 +35,19 @@ namespace Systems.UI
         {
             Debug.Log("End drag item");
             transform.SetParent(ParentAfterDrag);
+            EnableRaycastTarget();
+        }
+
+        public void EnableRaycastTarget()
+        {
             image.raycastTarget = true;
             tmpText.raycastTarget = true;
+        }
+
+        void DisableRaycastTarget()
+        {
+            image.raycastTarget = false;
+            tmpText.raycastTarget = false;
         }
     }
 }

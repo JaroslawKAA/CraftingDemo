@@ -225,6 +225,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   recordText: {fileID: 3828377693556725901}
+  draggableItem: {fileID: 2245441198192968234}
 --- !u!114 &2245441198192968234
 MonoBehaviour:
   m_ObjectHideFlags: 0

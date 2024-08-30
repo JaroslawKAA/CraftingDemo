@@ -798,6 +798,7 @@ MonoBehaviour:
   recordPrefab: {fileID: 1580161442127848895, guid: 63420c5b82fc0d44aa1e721501e36bc4,
     type: 3}
   recordsParent: {fileID: 1490562974488987238}
+  inventoryDraggableItemSlot: {fileID: 395049015044612167}
 --- !u!1 &8226425841605962876
 GameObject:
   m_ObjectHideFlags: 0
@@ -936,6 +937,7 @@ GameObject:
   - component: {fileID: 1536185290332291514}
   - component: {fileID: 357030606620109577}
   - component: {fileID: 7584712623190782322}
+  - component: {fileID: 395049015044612167}
   m_Layer: 5
   m_Name: Viewport
   m_TagString: Untagged
@@ -1014,3 +1016,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 0
+--- !u!114 &395049015044612167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8459651767265539026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04ae1d68fb229c645a2951f786a2caff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

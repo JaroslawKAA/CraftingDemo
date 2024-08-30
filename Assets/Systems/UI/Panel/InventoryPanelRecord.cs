@@ -8,10 +8,13 @@ namespace Systems.UI.Panel
     {
         [Title("Depend")]
         [SerializeField] [Required] TMP_Text recordText;
+        [SerializeField] [Required] DraggableItem draggableItem;
         
-        public string ItemGuid { get; private set; }
-        public string ItemName { get; private set; }
-        public int ItemCount { get; private set; }
+        [Title("Debug")]
+        [field: SerializeField] [field: ReadOnly] public string ItemGuid { get; private set; }
+        [field: SerializeField] [field: ReadOnly] public string ItemName { get; private set; }
+        [field: SerializeField] [field: ReadOnly] public int ItemCount { get; private set; }
+        public DraggableItem DraggableItem => draggableItem;
         public GameObject CachedGameObject { get; private set; }
 
         public void Init(string itemGuid, string itemName, int itemCount)
