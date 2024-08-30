@@ -22,7 +22,7 @@ namespace Systems.Crafting
             SubscribeEvents();
         }
 
-        void Start()
+        void OnDestroy()
         {
             UnsubscribeEvents();
         }
@@ -37,7 +37,8 @@ namespace Systems.Crafting
                 quickRecipeAccess.Add(recipeKey, craftingRecipe);
 
                 string invertedRecipeKey = craftingRecipe.secondItem.Guid + craftingRecipe.firstItem.Guid;
-                quickRecipeAccess.Add(invertedRecipeKey, craftingRecipe);
+                if(!quickRecipeAccess.ContainsKey(invertedRecipeKey))
+                    quickRecipeAccess.Add(invertedRecipeKey, craftingRecipe);
             }
         }
 
@@ -62,7 +63,7 @@ namespace Systems.Crafting
                 if (chance >= craftingRecipe.successChance)
                 {
                     craftingRecipe.onCraftingSuccess?.Invoke();
-                    TriggerConsumingItems(craftingRecipe);
+                    TriggerConsumingItems(craftingRecipe.firstItem.Guid, craftingRecipe.secondItem.Guid);
                     EventManager.TriggerEvent(new AddItemToPlayerInventoryEvent(craftingRecipe.result.Guid));
                     EventManager.TriggerEvent(new CraftingCompletedEvent(craftingRecipe.result.Guid));
                     Debug.Log("Crafting success");
@@ -70,30 +71,30 @@ namespace Systems.Crafting
                 else
                 {
                     craftingRecipe.onCraftingFailed?.Invoke();
-                    TriggerConsumingItems(craftingRecipe);
+                    TriggerConsumingItems(craftingRecipe.firstItem.Guid, craftingRecipe.secondItem.Guid);
                     EventManager.TriggerEvent(new CraftingCompletedEvent(null));
                     Debug.Log("Crafting failed");
                 }
             }
             else
             {
-                TriggerConsumingItems(craftingRecipe);
+                TriggerConsumingItems(craftRequestEvent.FirstItemGuid, craftRequestEvent.SecondItemGuid);
                 EventManager.TriggerEvent(new CraftingCompletedEvent(null));
                 Debug.Log("No crafting recipe for chosen items");
             }
         }
 
-        static void TriggerConsumingItems(CraftingRecipe craftingRecipe)
+        static void TriggerConsumingItems(params string[] itemsGuids)
         {
-            EventManager.TriggerEvent(new RemoveItemFromPlayerInventoryEvent(craftingRecipe.firstItem.Guid));
-            EventManager.TriggerEvent(new RemoveItemFromPlayerInventoryEvent(craftingRecipe.secondItem.Guid));
+            foreach (string itemsGuid in itemsGuids) 
+                EventManager.TriggerEvent(new RemoveItemFromPlayerInventoryEvent(itemsGuid));
         }
 
         bool TryGetRecipe(CraftRequestEvent craftRequestEvent, out CraftingRecipe craftingRecipe)
         {
             string key = craftRequestEvent.FirstItemGuid + craftRequestEvent.SecondItemGuid;
-            craftingRecipe = quickRecipeAccess[key];
-            return craftingRecipe != null;
+            craftingRecipe = null;
+            return quickRecipeAccess.TryGetValue(key, out CraftingRecipe recipe);
         }
     }
 }

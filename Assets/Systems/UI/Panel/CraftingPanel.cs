@@ -18,7 +18,8 @@ namespace Systems.UI.Panel
         [SerializeField] [Required] Button craftButton;
 
         // PRIVATE
-        bool crafting;
+        [Title("Debug")]
+        [SerializeField] bool crafting;
 
         EventListener craftingCompletedListener;
 
@@ -61,14 +62,14 @@ namespace Systems.UI.Panel
         {
             if (crafting) return;
 
-            InventoryPanelRecord inventoryPanelRecord1 = firstSlotRectTransform.GetComponent<InventoryPanelRecord>();
-            InventoryPanelRecord inventoryPanelRecord2 = secondSlotRectTransform.GetComponent<InventoryPanelRecord>();
+            InventoryPanelRecord inventoryPanelRecord1 = firstSlotRectTransform.GetComponentInChildren<InventoryPanelRecord>();
+            InventoryPanelRecord inventoryPanelRecord2 = secondSlotRectTransform.GetComponentInChildren<InventoryPanelRecord>();
 
             if (inventoryPanelRecord1 != null && inventoryPanelRecord2 != null)
             {
+                crafting = true;
                 EventManager.TriggerEvent(new CraftRequestEvent(inventoryPanelRecord1.ItemGuid, inventoryPanelRecord2.ItemGuid));
                 Debug.Log("Crafting requested");
-                crafting = true;
             }
         }
 
@@ -76,9 +77,18 @@ namespace Systems.UI.Panel
         {
             Debug.Log("Crafting completed");
             CraftingCompletedEvent craftingCompletedEvent = eventBase as CraftingCompletedEvent;
-            // TODO Consume items
-            // TODO Add result to inventory
+            
+            // DestroyRecordsInSlots();
+            EventManager.TriggerEvent(new RefreshInventoryRequestEvent());
             crafting = false;
+        }
+
+        void DestroyRecordsInSlots()
+        {
+            InventoryPanelRecord inventoryPanelRecord1 = firstSlotRectTransform.GetComponentInChildren<InventoryPanelRecord>();
+            InventoryPanelRecord inventoryPanelRecord2 = secondSlotRectTransform.GetComponentInChildren<InventoryPanelRecord>();
+            Destroy(inventoryPanelRecord1.CachedGameObject);
+            Destroy(inventoryPanelRecord2.CachedGameObject);
         }
     }
 }

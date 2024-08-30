@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
+using Systems.Core.GameEvents;
+using Systems.Core.GameEvents.Events;
 using Systems.Core.GameState;
 using Systems.Core.Services;
 using UnityEngine;
@@ -17,7 +19,17 @@ namespace Systems.UI.Panel
         // PRIVATE
         readonly Dictionary<string, InventoryPanelRecord> itemRecords = new();
 
+        EventListener refreshInventoryRequestListener;
+
         // UNITY EVENTS
+        protected override void Awake()
+        {
+            base.Awake();
+
+            refreshInventoryRequestListener = new EventListener(OnRefreshRequested);
+            EventManager.RegisterListener<RefreshInventoryRequestEvent>(refreshInventoryRequestListener);
+        }
+        
         void OnEnable()
         {
             InstantiateRecords();
@@ -27,7 +39,16 @@ namespace Systems.UI.Panel
         {
             DestroyRecords();
         }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            
+            EventManager.UnregisterListener<RefreshInventoryRequestEvent>(refreshInventoryRequestListener);
+            refreshInventoryRequestListener = null;
+        }
         
+
 
         // METHODS
         protected override void TryShowPanel(Type state)
@@ -57,6 +78,12 @@ namespace Systems.UI.Panel
             }
 
             itemRecords.Clear();
+        }
+        
+        void OnRefreshRequested(EventBase eventBase)
+        {
+            DestroyRecords();
+            InstantiateRecords();
         }
     }
 }
