@@ -1,6 +1,8 @@
 using Input = Systems.Core.InputSystem.InputsManager;
 
 using Sirenix.OdinInspector;
+using Systems.Core;
+using Systems.Core.Extensions;
 using Systems.Core.GameEvents;
 using Systems.Core.GameEvents.Events;
 using UnityEngine;
@@ -78,7 +80,7 @@ namespace Systems.InteractionSystem
         {
             PlayerSpawnedEvent playerSpawnedEvent = eventBase as PlayerSpawnedEvent;
 
-            detectionPoint = playerSpawnedEvent.Player.transform;
+            detectionPoint = playerSpawnedEvent.Player.transform.FindWithTag(Tags.CinemachineTarget);
         }
 
         void TryDetectItem()
@@ -95,6 +97,7 @@ namespace Systems.InteractionSystem
                 if (PreviouslyDetectedItem != null)
                 {
                     EventManager.TriggerEvent(new ItemReleasedEvent(PreviouslyDetectedItem.InstanceGuid));
+                    PreviouslyDetectedItem = null;
                 }
             }
             else
@@ -137,7 +140,8 @@ namespace Systems.InteractionSystem
         bool IsItemInFront(IIteractable itemInstance)
         {
             Vector3 toItemVector = itemInstance.CachedTransform.position - detectionPoint.position;
-            float dot = Vector3.Dot(detectionPoint.forward, toItemVector);
+            Vector3 detectionForward = Quaternion.Euler(0f, detectionPoint.eulerAngles.y, 0f) * Vector3.forward;
+            float dot = Vector3.Dot(detectionForward, toItemVector);
 
             return dot > 0;
         }
