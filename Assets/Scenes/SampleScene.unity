@@ -5839,11 +5839,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: CameraManager
       objectReference: {fileID: 0}
-    - target: {fileID: 1645897186527555754, guid: bff134d7c5233fa47aaaef3ec1bde8ff,
-        type: 3}
-      propertyPath: m_Follow
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 8395972883470247766, guid: bff134d7c5233fa47aaaef3ec1bde8ff,
         type: 3}
       propertyPath: m_LocalPosition.x
