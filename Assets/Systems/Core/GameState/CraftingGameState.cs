@@ -1,3 +1,4 @@
+using Systems.Core.Cursor;
 using Systems.Core.InputSystem;
 using UnityEngine;
 
@@ -14,7 +15,21 @@ namespace Systems.Core.GameState
         public override void OnEnter()
         {
             base.OnEnter();
-            
+
+            TurnOnInputs();
+            CursorManager.SetCursorVisible();
+            CursorManager.UnlockCursor();
+        }
+
+        public override void OnExit()
+        {
+            base.OnExit();
+
+            TurnOffInputs();
+        }
+
+        void TurnOnInputs()
+        {
             uiShortcutsActions.Enable();
             
             uiShortcutsActions.Crafting.performed += ToThirdPersonPlayerState;
@@ -22,17 +37,13 @@ namespace Systems.Core.GameState
             uiShortcutsActions.Back.performed += ToThirdPersonPlayerState;
         }
 
-        public override void OnExit()
+        void TurnOffInputs()
         {
-            base.OnExit();
-            
             uiShortcutsActions.Disable();
             
             uiShortcutsActions.Crafting.performed -= ToThirdPersonPlayerState;
             uiShortcutsActions.Inventory.performed -= ToInventoryState;
             uiShortcutsActions.Back.performed -= ToThirdPersonPlayerState;
         }
-        
-
     }
 }

@@ -36,9 +36,6 @@ namespace Systems.Core
         void Start()
         {
             SpawnPlayer();
-
-            Cursor.visible = false;
-            
             gameStateMachine.TransitionTo(GameStateMachine.State.ThirdPersonPlayer);
         }
 
